@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Алла Грудко](https://up.htmlacademy.ru/javascript/28/user/2156369).
-* Наставник: `Неизвестно`.
+* Наставник: [Андрей Ефимов](https://htmlacademy.ru/profile/efiand).
 
 ---
 
