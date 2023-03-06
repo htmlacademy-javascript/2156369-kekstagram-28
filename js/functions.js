@@ -6,11 +6,12 @@ checkLengthString('проверяемая строка', 10);
 
 const isPalindrome = (string) => {
   const stringForCheck = string.toLowerCase().replaceAll(' ', '');
-  let stringReverse = '';
-  for (let i = 0; i < stringForCheck.length; i++) {
-    stringReverse = stringForCheck[i] + stringReverse;
+  for (let i = 0; i < stringForCheck.length / 2; i++) {
+    if (stringForCheck[i] !== stringForCheck[stringForCheck.length - i - 1]) {
+      return false;
+    }
   }
-  return stringForCheck === stringReverse;
+  return true;
 };
 
 isPalindrome('топот');
