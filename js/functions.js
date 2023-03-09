@@ -6,8 +6,10 @@ checkLengthString('проверяемая строка', 10);
 
 const isPalindrome = (string) => {
   const stringForCheck = string.toLowerCase().replaceAll(' ', '');
+  const lastIndex = stringForCheck.length - 1;
+
   for (let i = 0; i < stringForCheck.length / 2; i++) {
-    if (stringForCheck[i] !== stringForCheck[stringForCheck.length - i - 1]) {
+    if (stringForCheck[i] !== stringForCheck[lastIndex - i]) {
       return false;
     }
   }
