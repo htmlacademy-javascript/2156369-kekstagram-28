@@ -51,6 +51,7 @@ const closeBigPhoto = () => {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   commentsShown = 0;
+  commentLoader.removeEventListener('click', onLoaderCommentsClick);
 };
 
 function onCloseButtonClick(evt) {
@@ -82,4 +83,4 @@ const showBigPhoto = (photos) => {
   commentLoader.addEventListener('click', onLoaderCommentsClick);
 };
 
-export { showBigPhoto };
+export { showBigPhoto, onDocumentKeydown };
