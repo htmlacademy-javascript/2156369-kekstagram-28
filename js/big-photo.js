@@ -83,4 +83,4 @@ const showBigPhoto = (photos) => {
   commentLoader.addEventListener('click', onLoaderCommentsClick);
 };
 
-export { showBigPhoto, onDocumentKeydown };
+export { showBigPhoto };
