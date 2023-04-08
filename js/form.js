@@ -1,4 +1,4 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, showAlert, showSuccessMessage, showErrorMessage } from './util.js';
 import { resetScale } from './scale-image.js';
 import { resetEffects } from './filters.js';
 
@@ -6,12 +6,18 @@ const COMMENT_MAX_LENGTH = 140;
 const HASHTAG_MAX_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
 
+const submitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикуется',
+};
+
 const fileLoad = document.querySelector('#upload-file');
 const imgLoadOverlay = document.querySelector('.img-upload__overlay');
 const form = document.querySelector('.img-upload__form');
 const closeModalButton = document.querySelector('.img-upload__cancel');
 const hashtagField = document.querySelector('.text__hashtags');
 const commentField = document.querySelector('.text__description');
+const submitButton = form.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -105,13 +111,37 @@ pristine.addValidator(
   'Хэш-тег не может быть использован дважды'
 );
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    form.submit();
-  }
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = submitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = submitButtonText.IDLE;
+};
+
+const onFormSubmit = (cb) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    if (pristine.validate()) {
+      blockSubmitButton();
+      cb(new FormData(evt.target))
+        .then(() => {
+          closeModal();
+          showSuccessMessage();
+        })
+        .catch((err) => {
+          showAlert(err);
+          showErrorMessage();
+        })
+        .finally(unblockSubmitButton);
+    }
+  });
 };
 
 fileLoad.addEventListener('change', onFileLoadChange);
 closeModalButton.addEventListener('click', onCloseModalButtonClick);
-form.addEventListener('submit', onFormSubmit);
+
+export { onFormSubmit, closeModal };
