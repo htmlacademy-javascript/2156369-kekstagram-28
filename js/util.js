@@ -1,8 +1,5 @@
 const ALERT_SHOW_TIME = 5000;
 
-const successMessageTemplate = document.querySelector('#success').content;
-const errorTemplate = document.querySelector('#error').content;
-
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const showAlert = (message) => {
@@ -24,65 +21,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-const onSuccessLoadingKeydown = (evt) => {
-  const successModal = document.querySelector('.success');
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    successModal.remove();
-    successModal.removeEventListener('keydown', onSuccessLoadingKeydown);
-  }
-};
-
-const onSuccessButtonClick = () => {
-  document.querySelector('.success').remove();
-  document.removeEventListener('click', onSuccessButtonClick);
-};
-
-const onModalSuccessOutsideClick = (evt) => {
-  if (!evt.target.closest('.success__inner')) {
-    document.querySelector('.success').remove();
-    document.removeEventListener('click', onModalSuccessOutsideClick);
-  }
-};
-
-const showSuccessMessage = () => {
-  const successMessage = successMessageTemplate.cloneNode(true);
-  document.body.append(successMessage);
-  const successModal = document.querySelector('.success');
-  const successButton = successModal.querySelector('.success__button');
-  successButton.addEventListener('click', onSuccessButtonClick);
-  document.addEventListener('keydown', onSuccessLoadingKeydown);
-  document.addEventListener('click', onModalSuccessOutsideClick);
-};
-
-const onErrorLoadingKeydown = (evt) => {
-  const alertModal = document.querySelector('.error');
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    alertModal.remove();
-    alertModal.removeEventListener('keydown', onErrorLoadingKeydown);
-  }
-};
-
-const onErrorButtonClick = () => {
-  document.querySelector('.error').remove();
-  document.removeEventListener('click', onErrorButtonClick);
-};
-
-const onModalErrorOutsideClick = (evt) => {
-  if (!evt.target.closest('.error__inner')) {
-    document.querySelector('.error').remove();
-    document.removeEventListener('click', onModalErrorOutsideClick);
-  }
-};
-
-const showErrorMessage = () => {
-  const errorMessage = errorTemplate.cloneNode(true);
-  document.body.append(errorMessage);
-  const errorButton = document.querySelector('.error__button');
-  errorButton.addEventListener('click', onErrorButtonClick);
-  document.addEventListener('keydown', onErrorLoadingKeydown);
-  document.addEventListener('click', onModalErrorOutsideClick);
-};
-
-export { showAlert, isEscapeKey, showSuccessMessage, showErrorMessage };
+export { showAlert, isEscapeKey };
