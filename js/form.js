@@ -1,17 +1,24 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, showAlert } from './util.js';
 import { resetScale } from './scale-image.js';
 import { resetEffects } from './filters.js';
+import { showSuccessMessage, showErrorMessage } from './status-message.js';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAG_MAX_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
 
-const fileLoad = document.querySelector('#upload-file');
-const imgLoadOverlay = document.querySelector('.img-upload__overlay');
+const submitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикуется',
+};
+
 const form = document.querySelector('.img-upload__form');
-const closeModalButton = document.querySelector('.img-upload__cancel');
-const hashtagField = document.querySelector('.text__hashtags');
-const commentField = document.querySelector('.text__description');
+const fileLoad = form.querySelector('#upload-file');
+const imgLoadOverlay = form.querySelector('.img-upload__overlay');
+const closeModalButton = imgLoadOverlay.querySelector('.img-upload__cancel');
+const hashtagField = form.querySelector('.text__hashtags');
+const commentField = form.querySelector('.text__description');
+const submitButton = form.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -105,13 +112,32 @@ pristine.addValidator(
   'Хэш-тег не может быть использован дважды'
 );
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  if (pristine.validate()) {
-    form.submit();
-  }
+const toggleSubmitButton = (isDisabled) => {
+  submitButton.disabled = isDisabled;
+  submitButton.textContent = isDisabled ? submitButtonText.SENDING : submitButtonText.IDLE;
+};
+
+const onFormSubmit = (cb) => {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    if (pristine.validate()) {
+      toggleSubmitButton(false);
+      cb(new FormData(evt.target))
+        .then(() => {
+          closeModal();
+          showSuccessMessage();
+        })
+        .catch((err) => {
+          showAlert(err);
+          showErrorMessage();
+        })
+        .finally(toggleSubmitButton);
+    }
+  });
 };
 
 fileLoad.addEventListener('change', onFileLoadChange);
 closeModalButton.addEventListener('click', onCloseModalButtonClick);
-form.addEventListener('submit', onFormSubmit);
+
+export { onFormSubmit, closeModal, onDocumentKeydown };
