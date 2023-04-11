@@ -3,7 +3,6 @@ import { showAlert } from './util.js';
 import { getData, sendData } from './api.js';
 import { initForm } from './form.js';
 import { initSorting } from './sorting.js';
-import './load-photo.js';
 
 initForm(sendData);
 
