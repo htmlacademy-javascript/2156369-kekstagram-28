@@ -2,6 +2,7 @@ import { isEscapeKey, showAlert } from './util.js';
 import { resetScale } from './scale-image.js';
 import { resetEffects } from './filters.js';
 import { showSuccessMessage, showErrorMessage } from './status-message.js';
+import { uploadFile } from './load-photo.js';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAG_MAX_COUNT = 5;
@@ -55,6 +56,9 @@ const onCloseModalButtonClick = () => {
 
 const onFileLoadChange = () => {
   showModal();
+  if (uploadFile(fileLoad)) {
+    showModal();
+  }
 };
 
 const inputInFocus = (evt) => {
