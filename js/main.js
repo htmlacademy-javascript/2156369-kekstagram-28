@@ -1,10 +1,15 @@
 import { getThumbnailsPhoto } from './thumbnails.js';
 import { showAlert } from './util.js';
 import { getData, sendData } from './api.js';
-import { onFormSubmit } from './form.js';
-import './big-photo.js';
-import './form.js';
+import { initForm } from './form.js';
+import { initSorting } from './sorting.js';
+import './load-photo.js';
 
-onFormSubmit(sendData);
+initForm(sendData);
 
-getData().then(getThumbnailsPhoto).catch(showAlert);
+getData()
+  .then((data) => {
+    initSorting(data);
+    getThumbnailsPhoto(data);
+  })
+  .catch(showAlert);
