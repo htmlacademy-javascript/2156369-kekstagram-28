@@ -16,7 +16,7 @@ const photoFiltersForm = photoSortingElement.querySelector('.img-filters__form')
 const sortButton = photoFiltersForm.querySelectorAll('.img-filters__button');
 const photosContainer = document.querySelector('.pictures');
 
-let descriptionSorted = [];
+let sortedPhotos = [];
 let currentFilter = Filter.DEFAULT;
 
 const getRandomSorting = () => Math.random() - SORT_NUMBER;
@@ -24,8 +24,8 @@ const getRandomSorting = () => Math.random() - SORT_NUMBER;
 const getDiscussedSorting = (a, b) => b.comments.length - a.comments.length;
 
 const clearOldPhotos = () => {
-  const photosElement = photosContainer.querySelectorAll('.picture');
-  photosElement.forEach((photo) => {
+  const photosElements = photosContainer.querySelectorAll('.picture');
+  photosElements.forEach((photo) => {
     photo.remove();
   });
 };
@@ -33,20 +33,24 @@ const clearOldPhotos = () => {
 const getSortedPhotos = () => {
   switch (currentFilter) {
     case Filter.RANDOM:
-      return [...descriptionSorted].sort(getRandomSorting).slice(0, PHOTO_COUNT_RANDOM);
+      return [...sortedPhotos].sort(getRandomSorting).slice(0, PHOTO_COUNT_RANDOM);
     case Filter.DISCUSSED:
-      return [...descriptionSorted].sort(getDiscussedSorting);
+      return [...sortedPhotos].sort(getDiscussedSorting);
     default:
-      return [...descriptionSorted];
+      return [...sortedPhotos];
   }
 };
 
-const init = (loadedPhotos) => {
+const initSorting = (loadedPhotos) => {
   const debouncedCallback = debounce(getThumbnailsPhoto, RENDER_DELAY);
   photoSortingElement.classList.remove('img-filters--inactive');
-  descriptionSorted = [...loadedPhotos];
+  sortedPhotos = [...loadedPhotos];
 
   photoFiltersForm.addEventListener('click', (evt) => {
+    if (evt.target.matches('.img-filters__button--active:not(#filter-random)') &&
+      evt.target.matches('.img-filters__button--active')) {
+      return;
+    }
     sortButton.forEach((item) => item.classList.remove('img-filters__button--active'));
     evt.target.classList.add('img-filters__button--active');
     currentFilter = evt.target.id;
@@ -56,4 +60,4 @@ const init = (loadedPhotos) => {
   debouncedCallback(getSortedPhotos());
 };
 
-export { init };
+export { initSorting };

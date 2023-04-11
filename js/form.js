@@ -117,7 +117,7 @@ const toggleSubmitButton = (isDisabled) => {
   submitButton.textContent = isDisabled ? submitButtonText.SENDING : submitButtonText.IDLE;
 };
 
-const onFormSubmit = (cb) => {
+const initForm = (cb) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
@@ -140,4 +140,4 @@ const onFormSubmit = (cb) => {
 fileLoad.addEventListener('change', onFileLoadChange);
 closeModalButton.addEventListener('click', onCloseModalButtonClick);
 
-export { onFormSubmit, closeModal, onDocumentKeydown };
+export { initForm, closeModal, onDocumentKeydown };
