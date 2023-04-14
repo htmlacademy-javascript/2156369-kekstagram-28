@@ -61,15 +61,15 @@ const onFileLoadChange = () => {
   }
 };
 
-const inputInFocus = (evt) => {
+const onInputInFocus = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     evt.stopPropagation();
   }
 };
 
-commentField.addEventListener('keydown', inputInFocus);
-hashtagField.addEventListener('keydown', inputInFocus);
+commentField.addEventListener('keydown', onInputInFocus);
+hashtagField.addEventListener('keydown', onInputInFocus);
 
 const isValidComment = (comment) => comment.length <= COMMENT_MAX_LENGTH;
 

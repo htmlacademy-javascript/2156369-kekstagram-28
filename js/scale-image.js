@@ -3,7 +3,7 @@ const MIN_SCALE = 25;
 const STEP_SCALE = 25;
 
 const scaleValue = document.querySelector('.scale__control--value');
-const imgPreview = document.querySelector('.img-upload__preview');
+const imgPreview = document.querySelector('.img-upload__preview img');
 const smallerButtonControl = document.querySelector('.scale__control--smaller');
 const biggerButtonControl = document.querySelector('.scale__control--bigger');
 
